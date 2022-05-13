@@ -4,9 +4,14 @@ class BooksController < ApplicationController
   end
   
   def create
-    book = Book.new(book_params)
-    book.save
-    redirect_to '/books'
+    @book = Book.new(book_params)
+    if book.save
+      flash[:success] = "Book was successfully created."
+      redirect_to book_path(book.id)
+    else
+      flash.now[:danger] = "登録に失敗しました"
+      render :create
+    end
   end
 
   def index
